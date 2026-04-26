@@ -233,7 +233,7 @@ function downloadDashboardReport() {
   const bizId = App.currentBiz?.id;
   if (!bizId) { toast('No business selected', 'error'); return; }
   const token = localStorage.getItem('gst_token');
-  const url = `/api/export/dashboard-report?business_id=${bizId}&token=${token}`;
+  const url = API_BASE + `/export/dashboard-report?business_id=${bizId}&token=${token}`;
   const a = document.createElement('a');
   a.href = url;
   a.download = 'dashboard_report.pdf';

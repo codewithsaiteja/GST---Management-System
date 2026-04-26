@@ -1,6 +1,13 @@
+// API configuration
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? '/api'
+  : 'https://gst-management-system.onrender.com/api';
+
+console.log('🌐 API Base initialized:', API_BASE);
+
 // API client
 const API = {
-  base: '/api',
+  base: API_BASE,
   token: () => localStorage.getItem('gst_token'),
   bizId: () => localStorage.getItem('gst_biz_id'),
 
@@ -11,23 +18,35 @@ const API = {
       Object.entries(params).forEach(([k, v]) => { if (v !== undefined && v !== null && v !== '') p.append(k, v); });
       const s = p.toString(); if (s) url += '?' + s;
     }
+
+    console.log(`📡 [API] ${method} ${url}`, body ? { body } : '');
+
     const opts = { method, headers: { 'Content-Type': 'application/json' } };
     const t = this.token(); if (t) opts.headers['Authorization'] = 'Bearer ' + t;
     if (body) opts.body = JSON.stringify(body);
-    const r = await fetch(url, opts);
-    const data = await r.json().catch(() => ({ success: false, message: 'Server error' }));
-    if (r.status === 401 && path !== '/auth/login') {
-      localStorage.removeItem('gst_token');
-      localStorage.removeItem('gst_biz_id');
-      toast('Session expired — please log in again', 'error');
-      setTimeout(() => {
-        document.getElementById('app').classList.remove('visible');
-        document.getElementById('auth-screen').style.display = 'flex';
-      }, 1200);
-      throw new Error('Session expired');
+
+    try {
+      const r = await fetch(url, opts);
+      const data = await r.json().catch(() => ({ success: false, message: 'Server error' }));
+
+      console.log(`📥 [API] Response ${r.status}`, data);
+
+      if (r.status === 401 && path !== '/auth/login') {
+        localStorage.removeItem('gst_token');
+        localStorage.removeItem('gst_biz_id');
+        toast('Session expired — please log in again', 'error');
+        setTimeout(() => {
+          document.getElementById('app').classList.remove('visible');
+          document.getElementById('auth-screen').style.display = 'flex';
+        }, 1200);
+        throw new Error('Session expired');
+      }
+      if (!r.ok && !data.success) throw new Error(data.message || 'Request failed');
+      return data;
+    } catch (e) {
+      console.error(`❌ [API] Error ${method} ${url}:`, e.message);
+      throw e;
     }
-    if (!r.ok && !data.success) throw new Error(data.message || 'Request failed');
-    return data;
   },
 
   get: (path, params) => API.req('GET', path, null, params),

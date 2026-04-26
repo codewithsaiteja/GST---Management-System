@@ -210,7 +210,7 @@
       return;
     }
 
-    socket = io(window.location.origin, {
+    socket = io(window.location.origin.includes('localhost') ? window.location.origin : 'https://gst-management-system.onrender.com', {
       transports: ['websocket', 'polling'],
       reconnection: true
     });
@@ -285,7 +285,7 @@
   async function loadConversations() {
     try {
       const token = localStorage.getItem('gst_token');
-      const res = await fetch('/api/chat/conversations', {
+      const res = await fetch(API_BASE + '/chat/conversations', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -304,7 +304,7 @@
   async function loadUserConversation() {
     try {
       const token = localStorage.getItem('gst_token');
-      const res = await fetch('/api/chat/conversation', {
+      const res = await fetch(API_BASE + '/chat/conversation', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -324,7 +324,7 @@
     
     try {
       const token = localStorage.getItem('gst_token');
-      const res = await fetch(`/api/chat/messages/${currentConversationId}`, {
+      const res = await fetch(API_BASE + `/chat/messages/${currentConversationId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -351,7 +351,7 @@
     
     try {
       const token = localStorage.getItem('gst_token');
-      const res = await fetch('/api/chat/send', {
+      const res = await fetch(API_BASE + '/chat/send', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

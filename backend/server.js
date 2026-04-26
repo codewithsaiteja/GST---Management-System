@@ -33,14 +33,25 @@ const io = new Server(server, {
 
 /* ── Middleware ─────────────────────────────────────────────── */
 app.use(helmet({ contentSecurityPolicy: false }));
+
+// Permissive CORS for production - handles preflight and allows the frontend origin
 app.use(cors({
-  origin: process.env.APP_URL || '*',
+  origin: true, // Reflects the request origin, helpful for multi-origin setups
   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
   allowedHeaders: ['Content-Type','Authorization'],
   credentials: true,
 }));
 app.options('*', cors()); // handle preflight
+
 app.use(compression());
+
+// Debug logger for all incoming requests (crucial for production debugging)
+app.use((req, res, next) => {
+  if (!req.path.startsWith('/api')) return next();
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  next();
+});
+
 // Route morgan through winston
 app.use(morgan('combined', { stream: { write: msg => logger.http(msg.trim()) } }));
 app.use(express.json({ limit: '10mb' }));

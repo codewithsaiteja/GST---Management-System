@@ -302,7 +302,7 @@
      SOCKET.IO
   ═══════════════════════════════════════════════════════════ */
   function connectSocket() {
-    socket = io(window.location.origin, {
+    socket = io(window.location.origin.includes('localhost') ? window.location.origin : 'https://gst-management-system.onrender.com', {
       transports: ['websocket', 'polling'],
       reconnection: true,
       reconnectionDelay: 1500,
@@ -449,7 +449,7 @@
 
     try {
       const token = localStorage.getItem('gst_token');
-      const res   = await fetch('/api/tickets', {
+      const res   = await fetch(API_BASE + '/tickets', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
         body: JSON.stringify({ subject, description, priority, chatRoom: currentRoom }),
@@ -783,7 +783,7 @@
     try {
       const token  = localStorage.getItem('gst_token');
       const status = document.getElementById('ticket-filter-status')?.value || '';
-      const url    = `/api/tickets${status ? `?status=${status}` : ''}`;
+      const url    = API_BASE + `/tickets${status ? `?status=${status}` : ''}`;
       const res    = await fetch(url, { headers: { Authorization: 'Bearer ' + token } });
       const json   = await res.json();
       if (!json.success) return;
@@ -907,7 +907,7 @@
       const status   = document.getElementById('admin-ticket-status')?.value;
       const priority = document.getElementById('admin-ticket-priority')?.value;
 
-      await fetch(`/api/tickets/${ticketId}/status`, {
+      await fetch(API_BASE + `/tickets/${ticketId}/status`, {
         method:  'PATCH',
         headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
         body: JSON.stringify({ status, priority }),
@@ -929,7 +929,7 @@
 
     try {
       const token = localStorage.getItem('gst_token');
-      const res   = await fetch(`/api/tickets/${ticketId}/reply`, {
+      const res   = await fetch(API_BASE + `/tickets/${ticketId}/reply`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
         body: JSON.stringify({ message: msg }),
@@ -964,7 +964,7 @@
   async function loadHistory(room, containerId) {
     try {
       const token = localStorage.getItem('gst_token');
-      const res   = await fetch(`/api/chat/${encodeURIComponent(room)}`, {
+      const res   = await fetch(API_BASE + `/chat/${encodeURIComponent(room)}`, {
         headers: { Authorization: 'Bearer ' + token }
       });
       const json = await res.json();

@@ -480,7 +480,7 @@ async function downloadInvoicePDF(id, num) {
       toast('Authentication required', 'error');
       return;
     }
-    window.open(`/api/export/invoice/${id}/pdf?business_id=${bizId}&token=${token}`, '_blank');
+    window.open(API_BASE + `/export/invoice/${id}/pdf?business_id=${bizId}&token=${token}`, '_blank');
   } catch(e) {
     console.error('Download PDF error:', e);
     toast('Failed to download PDF', 'error');
@@ -490,7 +490,7 @@ async function downloadInvoicePDF(id, num) {
 async function exportInvoicesExcel() {
   const from = document.getElementById('inv-from')?.value;
   const to = document.getElementById('inv-to')?.value;
-  const url = `/api/export/invoices/excel?business_id=${App.currentBiz?.id}${from?'&from_date='+from:''}${to?'&to_date='+to:''}`;
+  const url = API_BASE + `/export/invoices/excel?business_id=${App.currentBiz?.id}${from?'&from_date='+from:''}${to?'&to_date='+to:''}`;
   const a = document.createElement('a'); a.href = url; a.download = 'invoices.xlsx';
   const headers = new Headers({ 'Authorization': 'Bearer ' + API.token() });
   const res = await fetch(url, { headers });

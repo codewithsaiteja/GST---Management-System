@@ -312,7 +312,7 @@ const ProfilePage = {
   downloadBackup() {
     const token = localStorage.getItem('gst_token');
     const a = document.createElement('a');
-    a.href = `/api/backup?token=${token}`;
+    a.href = API_BASE + `/backup?token=${token}`;
     a.download = `gst_backup_${new Date().toISOString().split('T')[0]}.db`;
     document.body.appendChild(a);
     a.click();
@@ -325,7 +325,7 @@ const ProfilePage = {
     if (!bizId) { toast('No business selected', 'error'); return; }
     const token = localStorage.getItem('gst_token');
     const a = document.createElement('a');
-    a.href = `/api/export/dashboard-report?business_id=${bizId}&token=${token}`;
+    a.href = API_BASE + `/export/dashboard-report?business_id=${bizId}&token=${token}`;
     a.download = 'gst_summary.pdf';
     document.body.appendChild(a);
     a.click();
