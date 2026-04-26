@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat System Test</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chat.css">
+</head>
+<body>
+    <div style="padding: 20px;">
+        <h1>Chat System Test</h1>
+        <p>This page tests the enhanced chat system with admin moderation features.</p>
+        
+        <div style="margin: 20px 0;">
+            <button onclick="testAsUser()">Test as User</button>
+            <button onclick="testAsAdmin()">Test as Admin</button>
+        </div>
+        
+        <div id="status" style="margin: 20px 0; padding: 10px; background: #f0f0f0; border-radius: 5px;">
+            Status: Ready to test
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/chat.js"></script>
+    
+    <script>
+        function updateStatus(message) {
+            document.getElementById('status').textContent = 'Status: ' + message;
+        }
+        
+        function testAsUser() {
+            updateStatus('Testing as User...');
+            
+            // Mock user data
+            const mockUser = {
+                _id: 'user123',
+                name: 'Test User',
+                email: 'user@test.com',
+                role: 'user'
+            };
+            
+            // Store mock token
+            localStorage.setItem('gst_token', 'mock-user-token');
+            
+            // Initialize chat
+            ChatModule.init(mockUser);
+            updateStatus('User chat initialized - check floating chat button');
+        }
+        
+        function testAsAdmin() {
+            updateStatus('Testing as Admin...');
+            
+            // Mock admin data
+            const mockAdmin = {
+                _id: 'admin123',
+                name: 'Test Admin',
+                email: 'admin@test.com',
+                role: 'admin'
+            };
+            
+            // Store mock token
+            localStorage.setItem('gst_token', 'mock-admin-token');
+            
+            // Initialize chat
+            ChatModule.init(mockAdmin);
+            updateStatus('Admin chat initialized - check floating dashboard button');
+        }
+    </script>
+</body>
+</html>

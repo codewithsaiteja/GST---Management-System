@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GST Compliance System</title>
+  <meta name="description" content="A GST management application to create invoices, calculate GST, track compliance, and manage returns.">
+  <link rel="stylesheet" href="/css/landing.css">
+
+</head>
+<body>
+
+<!-- ── SCROLL PROGRESS ── -->
+<div id="scroll-progress"></div>
+
+<!-- ── BACK TO TOP ── -->
+<button id="back-to-top" aria-label="Back to top">
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+
+<!-- ── NAV ── -->
+<nav class="nav" id="nav">
+  <a href="/" class="nav-logo">
+    <div class="nav-logo-icon">G</div>
+    <div>
+      <div class="nav-logo-text">GST System</div>
+    </div>
+  </a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#modules">Modules</a></li>
+    <li><a href="#how">How it Works</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="/login" class="btn btn-ghost">Login</a>
+    <a href="/login#signup" class="btn btn-primary" id="nav-cta">Create Account →</a>
+  </div>
+  <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">☰</button>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero glow-bg" id="hero">
+  <div>
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      GST Management Platform
+    </div>
+    <h1>GST Compliance System Portal.</h1>
+    <p class="hero-sub">Manage sales invoices, automate GST calculations, generate return summaries, and track compliance deadlines. Streamline your tax workflow from a single, unified interface.</p>
+    <div class="hero-actions">
+      <a href="/login#signup" class="btn btn-primary btn-lg">Create Account</a>
+      <a href="#how" class="btn btn-outline btn-lg">View Details</a>
+    </div>
+
+    <!-- Browser Mockup -->
+    <div class="mockup-wrap">
+      <div class="mockup-browser">
+        <div class="mockup-bar">
+          <div class="mockup-dots"><span></span><span></span><span></span></div>
+          <div class="mockup-url">dashboard.gst-system.internal</div>
+        </div>
+        <div class="mockup-body">
+          <div class="mockup-sidebar">
+            <div class="mock-logo">
+              <div class="mock-logo-icon">G</div>
+              <div>
+                <div class="mock-logo-text">GST System</div>
+              </div>
+            </div>
+            <div class="mock-section-label">Main</div>
+            <div class="mock-nav-item active">
+              <span><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span> Dashboard
+            </div>
+            <div class="mock-nav-item"><span><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></span> Sales Invoices</div>
+            <div class="mock-nav-item"><span><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg></span> Purchases</div>
+            <div class="mock-nav-item"><span><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></span> Parties</div>
+            <div class="mock-section-label">GST Filing</div>
+            <div class="mock-nav-item"><span><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span> GST Returns</div>
+            <div class="mock-nav-item"><span><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></span> Reconciliation</div>
+            <div class="mock-nav-item"><span><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span> Compliance</div>
+            <div class="mock-section-label">Tools</div>
+            <div class="mock-nav-item"><span><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span> Analytics</div>
+            <div class="mock-nav-item"><span><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span> TDS / TCS</div>
+          </div>
+          <div class="mockup-content">
+            <div class="mock-header">
+              <div class="mock-title">Dashboard</div>
+              <div class="mock-period">FY 2024-25 · Q3</div>
+            </div>
+            <div class="mock-cards">
+              <div class="mock-card">
+                <div class="mock-card-label">Total Tax Liability</div>
+                <div class="mock-card-val">₹4.2L</div>
+                <div class="mock-card-change up">↑ 12.4%</div>
+              </div>
+              <div class="mock-card">
+                <div class="mock-card-label">ITC Available</div>
+                <div class="mock-card-val">₹1.8L</div>
+                <div class="mock-card-change up">↑ 8.1%</div>
+              </div>
+              <div class="mock-card">
+                <div class="mock-card-label">Net Payable</div>
+                <div class="mock-card-val">₹2.4L</div>
+                <div class="mock-card-change down">↓ 3.2%</div>
+              </div>
+              <div class="mock-card">
+                <div class="mock-card-label">Returns Filed</div>
+                <div class="mock-card-val">8/12</div>
+                <div class="mock-card-change up">On Track</div>
+              </div>
+            </div>
+            <div class="mock-charts">
+              <div class="mock-chart-box">
+                <div class="mock-chart-title">Monthly Tax Trend</div>
+                <div class="mock-bars" id="mock-bars"></div>
+              </div>
+              <div class="mock-chart-box">
+                <div class="mock-chart-title">Tax Breakup</div>
+                <div class="mock-donut"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS BAR ── -->
+<div class="stats-section">
+  <div class="stats-container">
+    <div class="stat-item">
+      <div class="stat-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
+      <h3>Invoice Module</h3>
+      <p>Standardized invoice generation</p>
+    </div>
+    <div class="divider"></div>
+    <div class="stat-item">
+      <div class="stat-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><line x1="8" y1="18" x2="8" y2="18"/><line x1="12" y1="12" x2="16" y2="12"/><line x1="14" y1="10" x2="14" y2="14"/></svg></div>
+      <h3>GST Engine</h3>
+      <p>Automated rate calculations</p>
+    </div>
+    <div class="divider"></div>
+    <div class="stat-item">
+      <div class="stat-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+      <h3>Dashboard</h3>
+      <p>Centralized GST data overview</p>
+    </div>
+    <div class="divider"></div>
+    <div class="stat-item">
+      <div class="stat-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <h3>Support</h3>
+      <p>Contact support for GST-related help</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── FEATURES ── -->
+<section class="features glow-bg" id="features">
+  <div class="section-header">
+    <div class="section-tag">Features</div>
+    <h2 class="section-title">System Capabilities</h2>
+    <p class="section-sub">Empower your accounting team with a comprehensive suite of enterprise-grade modules designed specifically for Indian tax regulations. From automated B2B invoice generation to real-time 2A/2B reconciliation and one-click JSON payload exports, our platform handles the entire GST lifecycle so you can focus on scaling your business securely.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card featured">
+      <div class="feature-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
+      <div class="feature-title">GST Returns Summary</div>
+      <div class="feature-desc">Automatically compiles your entire monthly ledger into ready-to-file GSTR-1 and 3B JSON files. Run comprehensive pre-filing validation checks to catch errors and ensure perfect portal acceptance.</div>
+      <div class="feature-tags">
+        <span class="feature-tag">GSTR-1</span>
+        <span class="feature-tag">GSTR-3B</span>
+        <span class="feature-tag">Systematic</span>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
+      <div class="feature-title">2A/2B Reconciliation</div>
+      <div class="feature-desc">A powerful internal matching algorithm instantly compares your local purchase data against vendor uploads on the 2A/2B ledger. Isolate value mismatches, missing invoices, and locked capital.</div>
+      <div class="feature-tags">
+        <span class="feature-tag">ITC Matching</span>
+        <span class="feature-tag">Automated</span>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+      <div class="feature-title">Invoice Management</div>
+      <div class="feature-desc">An enterprise-grade billing suite capable of handling complex B2B, B2C, Export, and RCM queries. Dynamically splits CGST, SGST, and IGST based on intelligent state and party matching.</div>
+      <div class="feature-tags">
+        <span class="feature-tag">B2B / B2C</span>
+        <span class="feature-tag">RCM</span>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div class="feature-title">Compliance Tracker</div>
+      <div class="feature-desc">Never miss another deadline or incur late fees. Your live dashboard continuously tracks your corporate filing history and alerts you proactively regarding upcoming GSTR milestones.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      <div class="feature-title">HSN Code Lookup</div>
+      <div class="feature-desc">Full access to the updated Indian HSN and SAC registry. Eliminate invoicing errors by strictly validating commodity codes and multi-tier tax slabs before issuance.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+      <div class="feature-title">Analytics</div>
+      <div class="feature-desc">Dynamic data visualization providing executive oversight into tax outputs versus Input Tax Credits. Export rich financial trend reports to assist your external auditors comprehensively.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="how" id="how">
+  <div class="section-header">
+    <div class="section-tag">Process</div>
+    <h2 class="section-title">Workflow Overview</h2>
+    <p class="section-sub">Transform complex taxation requirements into a simple, structured, and highly automated operational pipeline. Start by securely configuring your enterprise profile, and let our intelligent state-matching algorithms process your daily transactions, resulting in flawlessly compiled returns ready for government portal submission.</p>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-title">Configure Profile</div>
+      <div class="step-desc">Enter GSTIN and related business information into the system.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-title">Record Transactions</div>
+      <div class="step-desc">Input sales and purchase data with automated tax rate application.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-title">Review Returns</div>
+      <div class="step-desc">Examine system-generated GSTR-1 and GSTR-3B summaries prior to filing.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-title">Monitor Deadlines</div>
+      <div class="step-desc">Track and update the status of mandatory compliance filings.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MODULES ── -->
+<section class="modules" id="modules">
+  <div class="section-header">
+    <div class="section-tag">Components</div>
+    <h2 class="section-title">System Modules</h2>
+    <p class="section-sub">Dive into a natively interconnected ecosystem of powerful functional modules built for scale. Whether you need precise HSN code validation, live TDS/TCS deduction tracking, or automated cross-referencing against vendor GSTR records, our core components ensure every aspect of your financial pipeline remains strictly accurate.</p>
+  </div>
+  <div class="modules-grid">
+    <div class="module-card">
+      <div class="module-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
+      <div class="module-title">Sales Invoices</div><div class="module-desc">Comprehensive B2B/B2C invoice generation engine with real-time tax calculation and compliance validation.</div>
+    </div>
+    <div class="module-card">
+      <div class="module-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg></div>
+      <div class="module-title">Purchases</div><div class="module-desc">Robust expense management tracking eligible Input Tax Credit (ITC) to optimize cash flow securely.</div>
+    </div>
+    <div class="module-card">
+      <div class="module-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+      <div class="module-title">Parties</div><div class="module-desc">Centralized vendor registry with automatic GSTIN validation to prevent upstream compliance errors.</div>
+    </div>
+    <div class="module-card">
+      <div class="module-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+      <div class="module-title">GST Returns</div><div class="module-desc">Automated payload generation for GSTR-1 and 3B, ready for frictionless secure portal upload.</div>
+    </div>
+    <div class="module-card">
+      <div class="module-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
+      <div class="module-title">Reconciliation</div><div class="module-desc">Advanced matching engine. Automatically flags ITC discrepancies against published 2A/2B datasets.</div>
+    </div>
+    <div class="module-card">
+      <div class="module-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <div class="module-title">Compliance</div><div class="module-desc">Intelligent dashboard tracking upcoming deadlines to guarantee you avoid late fees and penalties.</div>
+    </div>
+    <div class="module-card">
+      <div class="module-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
+      <div class="module-title">TDS / TCS</div><div class="module-desc">Dedicated deduction tracker for managing Tax Deducted/Collected at Source inputs accurately.</div>
+    </div>
+    <div class="module-card">
+      <div class="module-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      <div class="module-title">HSN Lookup</div><div class="module-desc">Integrated master database to instantly verify precise commodity classifications and slab rates.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section class="faq-section glow-bg" id="faq">
+  <div class="section-header text-center" style="text-align: center;">
+    <div class="section-tag">FAQ</div>
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <p class="section-sub" style="margin: 0 auto;">Everything you need to know about the GST platform.</p>
+  </div>
+  <div class="faq reveal">
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">Is the platform compliant with the latest GST rules? <span>+</span></div>
+        <div class="faq-a">Yes. We regularly update our logic and HSN/SAC databases to align precisely with the latest Indian GST rules and IT matching regulations.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I generate both B2B and B2C invoices? <span>+</span></div>
+        <div class="faq-a">Absolutely. Our invoice module natively supports B2B, B2C, and RCM compliance, calculating separate SGST, CGST, and IGST based on place of supply.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How does automated reconciliation work? <span>+</span></div>
+        <div class="faq-a">By uploading your GSTR-2A/2B JSON files, the system automatically cross-references your logged purchase invoices to highlight missing ITCs or value mismatches instantly.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT CTA ── -->
+<section class="cta glow-bg">
+  <h2>Get in Touch</h2>
+  <p>Need custom integration or have specific compliance questions?</p>
+  <p style="margin-top: 12px; font-size: 1rem; opacity: 0.85;">Our support team is available to assist you with onboarding, technical queries, or enterprise solutions.</p>
+  <div class="cta-actions" style="margin-top: 32px;">
+    <a href="/contact.html" class="btn btn-primary btn-lg">Contact Us →</a>
+    <a href="/support.html" class="btn btn-ghost btn-lg">View Support Center</a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <div class="footer-logo-icon">G</div>
+      <div>
+        <div class="footer-logo-text">GST System</div>
+        <div class="footer-logo-copy">© 2026</div>
+      </div>
+      <!-- Social icons beside GST System -->
+      <div class="footer-social">
+        <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram" class="social-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
+        </a>
+        <a href="https://twitter.com" target="_blank" rel="noopener" aria-label="Twitter" class="social-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
+          </svg>
+        </a>
+        <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-tagline">GST Compliance & Return Management Platform</div>
+    <div class="footer-links">
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+      <a href="/support.html">Support</a>
+      <a href="/documentation.html">Documentation</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/landing.js"></script>
+<script>
+  // ── Scroll Progress ──
+  const progressBar = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = (scrollTop / docHeight * 100) + '%';
+  }, { passive: true });
+
+  // ── Back to Top ──
+  const backToTop = document.getElementById('back-to-top');
+  window.addEventListener('scroll', () => {
+    backToTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ── 3D Mockup Tilt ──
+  const mockupWrap = document.querySelector('.mockup-wrap');
+  const mockupCard = document.querySelector('.mockup-browser');
+  
+  if (mockupWrap && mockupCard) {
+    mockupWrap.addEventListener('mousemove', e => {
+      const rect = mockupWrap.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top  + rect.height / 2;
+      const dx = (e.clientX - cx) / (rect.width  / 2);
+      const dy = (e.clientY - cy) / (rect.height / 2);
+
+      const rotY =  dx * 14;
+      const rotX = -dy *  8;
+
+      mockupCard.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+    });
+
+    mockupWrap.addEventListener('mouseleave', () => {
+      mockupCard.style.transition = 'transform 0.6s cubic-bezier(0.16,1,0.3,1)';
+      mockupCard.style.transform  = 'rotateX(0deg) rotateY(0deg)';
+      setTimeout(() => mockupCard.style.transition = 'transform 0.12s ease-out', 600);
+    });
+  }
+
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (sessionStorage.getItem('gst_logged_out')) {
+      sessionStorage.removeItem('gst_logged_out');
+      const t = document.createElement('div');
+      t.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#1e2236;border:1px solid #2e3554;border-left:3px solid #22c55e;border-radius:10px;padding:12px 18px;font-size:0.85rem;color:#e8eaf6;display:flex;align-items:center;gap:10px;box-shadow:0 4px 24px rgba(0,0,0,0.4);z-index:9999;font-family:DM Sans,sans-serif;animation:slideIn 0.3s ease';
+      t.innerHTML = '<span style="color:#22c55e">✓</span><span>Logged out successfully</span>';
+      document.body.appendChild(t);
+      setTimeout(() => { t.style.transition='0.3s'; t.style.opacity='0'; t.style.transform='translateX(100%)'; setTimeout(()=>t.remove(),300); }, 3000);
+    }
+  });
+</script>
+</body>
+</html>

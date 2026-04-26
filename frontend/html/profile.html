@@ -1,0 +1,97 @@
+<!-- Profile Dashboard Page -->
+<div class="profile-page">
+  <!-- Header Section -->
+  <div class="profile-header">
+    <div class="profile-header-content">
+      <div class="profile-identity">
+        <div class="profile-avatar" id="profile-avatar">A</div>
+        <div class="profile-identity-info">
+          <h1 class="profile-name" id="profile-name">Loading...</h1>
+          <div class="profile-email" id="profile-email">—</div>
+          <span class="profile-role-badge" id="profile-role-badge">—</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs Section -->
+  <div class="profile-tabs-container">
+    <div class="profile-tabs">
+      <button class="profile-tab active" data-tab="profile" onclick="ProfilePage.switchTab('profile')">Profile</button>
+      <button class="profile-tab" data-tab="password" onclick="ProfilePage.switchTab('password')">Password</button>
+      <button class="profile-tab" data-tab="gst" onclick="ProfilePage.switchTab('gst')">GST</button>
+      <button class="profile-tab" data-tab="settings" onclick="ProfilePage.switchTab('settings')">Settings</button>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <div class="profile-content">
+    
+    <!-- Tab: Profile -->
+    <div class="profile-tab-content" id="profile-tab-profile">
+      <div class="profile-section-card">
+        <h2 class="profile-section-title">Personal Information</h2>
+        <div id="profile-msg"></div>
+        <div class="profile-form">
+          <div class="form-group">
+            <label>Full Name <span class="req">*</span></label>
+            <input id="profile-field-name" type="text" placeholder="Your name">
+          </div>
+          <div class="form-group">
+            <label>Email Address <span class="req">*</span></label>
+            <input id="profile-field-email" type="email" placeholder="user@company.gstin">
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input id="profile-field-phone" type="tel" placeholder="+91 9999999999">
+          </div>
+        </div>
+        <button class="btn btn-primary" id="profile-save-btn" onclick="ProfilePage.saveProfile()">Save Changes</button>
+      </div>
+    </div>
+
+    <!-- Tab: Password -->
+    <div class="profile-tab-content hidden" id="profile-tab-password">
+      <div class="profile-section-card">
+        <h2 class="profile-section-title">Change Password</h2>
+        <div id="password-msg"></div>
+        <div class="profile-form">
+          <div class="form-group">
+            <label>Current Password <span class="req">*</span></label>
+            <input id="profile-cur-pw" type="password" placeholder="Current password">
+          </div>
+          <div class="form-group">
+            <label>New Password <span class="req">*</span></label>
+            <input id="profile-new-pw" type="password" placeholder="Min 6 characters">
+          </div>
+          <div class="form-group">
+            <label>Confirm New Password <span class="req">*</span></label>
+            <input id="profile-conf-pw" type="password" placeholder="Repeat new password">
+          </div>
+        </div>
+        <button class="btn btn-primary" id="profile-save-pw-btn" onclick="ProfilePage.changePassword()">Update Password</button>
+      </div>
+    </div>
+
+    <!-- Tab: GST -->
+    <div class="profile-tab-content hidden" id="profile-tab-gst">
+      <div class="profile-section-card">
+        <h2 class="profile-section-title">GST Information</h2>
+        <div id="profile-gst-content">
+          <div class="empty-state" style="padding:24px">
+            <div class="spinner" style="margin:0 auto;width:24px;height:24px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Settings -->
+    <div class="profile-tab-content hidden" id="profile-tab-settings">
+      <div class="profile-section-card">
+        <h2 class="profile-section-title">Application Settings</h2>
+        <div id="profile-settings-content"></div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GST Compliance System</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/chat-new.css">
+  <link rel="stylesheet" href="/css/profile.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ── AUTH SCREEN ────────────────────────────────────────────────────────── -->
+<div id="auth-screen">
+  <!-- Login Card -->
+  <div class="auth-card" id="login-card">
+    <div class="auth-logo">
+      <div class="logo-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <h1>GST Compliance</h1>
+      <p>Login to manage your GST filings</p>
+    </div>
+    <div id="auth-error" class="alert alert-danger hidden"></div>
+    <div class="form-group" style="margin-bottom:14px">
+      <label>Email Address</label>
+      <input id="login-email" type="email" placeholder="admin@gst.local" autocomplete="email">
+    </div>
+    <div class="form-group" style="margin-bottom:14px">
+      <label>Password</label>
+      <div class="pwd-wrap">
+        <input id="login-password" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+        <button type="button" class="pwd-toggle" onclick="togglePwd(this)" aria-label="Toggle password visibility" tabindex="-1">
+        <svg class="icon-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        <svg class="icon-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+      </button>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <label style="display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text2);cursor:pointer">
+        <input type="checkbox" id="remember-me" style="width:14px;height:14px;cursor:pointer"> Remember me
+      </label>
+      <a href="#" style="font-size:0.82rem;color:var(--accent)" onclick="toggleAuth('forgot')">Forgot password?</a>
+    </div>
+    <button class="btn btn-primary w-full" id="login-btn" onclick="doLogin()" style="padding:11px">Login</button>
+    <div style="text-align:center;margin-top:16px;font-size:0.82rem;color:var(--text3)">
+      Don't have an account? <a href="#" style="color:var(--accent)" onclick="toggleAuth('signup')">Create Account</a>
+    </div>
+    <div style="text-align:center;margin-top:12px;font-size:0.78rem;color:var(--text3)">
+      Default: admin@gst.local / Admin@123
+    </div>
+  </div>
+
+  <!-- Signup Card -->
+  <div class="auth-card hidden" id="signup-card">
+    <div class="auth-logo">
+      <div class="logo-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <h1>Create Account</h1>
+      <p>Join to simplify your GST filings</p>
+    </div>
+    <div id="signup-error" class="alert alert-danger hidden"></div>
+    <div class="form-group" style="margin-bottom:14px">
+      <label>Full Name</label>
+      <input id="signup-name" type="text" placeholder="John Doe">
+    </div>
+    <div class="form-group" style="margin-bottom:14px">
+      <label>Email Address</label>
+      <input id="signup-email" type="email" placeholder="john@company.com">
+    </div>
+    <div class="form-group" style="margin-bottom:20px">
+      <label>Password</label>
+      <div class="pwd-wrap">
+        <input id="signup-password" type="password" placeholder="Min 6 characters" onkeydown="if(event.key==='Enter')doRegister()">
+        <button type="button" class="pwd-toggle" onclick="togglePwd(this)" aria-label="Toggle password visibility" tabindex="-1">
+        <svg class="icon-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        <svg class="icon-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+      </button>
+      </div>
+    </div>
+    <button class="btn btn-primary w-full" id="signup-btn" onclick="doRegister()" style="padding:11px">Create Account</button>
+    <div style="text-align:center;margin-top:16px;font-size:0.82rem;color:var(--text3)">
+      Already have an account? <a href="#" style="color:var(--accent)" onclick="toggleAuth('login')">Login</a>
+    </div>
+  </div>
+
+  <!-- Forgot Password Card -->
+  <div class="auth-card hidden" id="forgot-card">
+    <div class="auth-logo">
+      <div class="logo-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h1>Reset Password</h1>
+      <p>Enter your email to get a reset token</p>
+    </div>
+    <div id="forgot-error" class="alert alert-danger hidden"></div>
+    <div class="form-group" style="margin-bottom:20px">
+      <label>Email Address</label>
+      <input id="forgot-email" type="email" placeholder="user@company.gstin" onkeydown="if(event.key==='Enter')doForgotPassword()">
+    </div>
+    <button class="btn btn-primary w-full" id="forgot-btn" onclick="doForgotPassword()" style="padding:11px">Send Reset Token</button>
+    <div style="text-align:center;margin-top:16px;font-size:0.82rem;color:var(--text3)">
+      <a href="#" style="color:var(--accent)" onclick="toggleAuth('login')">Back to login</a>
+    </div>
+  </div>
+
+  <!-- Reset Password Card -->
+  <div class="auth-card hidden" id="reset-card">
+    <div class="auth-logo">
+      <div class="logo-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+      </div>
+      <h1>New Password</h1>
+      <p>Enter your token and set a new password</p>
+    </div>
+    <div id="reset-error" class="alert alert-danger hidden"></div>
+    <div class="form-group" style="margin-bottom:14px">
+      <label>Reset Token</label>
+      <input id="reset-token" type="text" placeholder="6-character token (e.g. A1B2C3)">
+    </div>
+    <div class="form-group" style="margin-bottom:20px">
+      <label>New Password</label>
+      <div class="pwd-wrap">
+        <input id="reset-password" type="password" placeholder="Min 6 characters" onkeydown="if(event.key==='Enter')doResetPassword()">
+        <button type="button" class="pwd-toggle" onclick="togglePwd(this)" aria-label="Toggle password visibility" tabindex="-1">
+        <svg class="icon-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        <svg class="icon-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+      </button>
+      </div>
+    </div>
+    <button class="btn btn-primary w-full" id="reset-btn" onclick="doResetPassword()" style="padding:11px">Confirm New Password</button>
+    <div style="text-align:center;margin-top:16px;font-size:0.82rem;color:var(--text3)">
+      <a href="#" style="color:var(--accent)" onclick="toggleAuth('login')">Cancel</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAIN APP ───────────────────────────────────────────────────────────── -->
+<div id="app">
+  <!-- Sidebar overlay for mobile -->
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="App.toggleSidebar()"></div>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">G</div>
+      <div>
+        <div class="sidebar-title">GST System</div>
+        <div class="sidebar-sub">Compliance Suite</div>
+      </div>
+    </div>
+
+    <!-- Business Switcher — only navigates to businesses page for admins -->
+    <div class="biz-switcher" id="sidebar-biz-switcher" onclick="RBAC.isAdmin() ? Pages.navigate('businesses') : null">
+      <div class="biz-name" id="biz-name">Loading...</div>
+      <div class="biz-gstin" id="biz-gstin">—</div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Main</div>
+      <div class="nav-item" data-page="dashboard" onclick="Pages.navigate('dashboard')">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span> Dashboard
+      </div>
+      <div class="nav-item" data-page="invoices" onclick="Pages.navigate('invoices')">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span> Sales Invoices
+      </div>
+      <div class="nav-item" data-page="purchases" onclick="Pages.navigate('purchases')">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span> Purchases
+      </div>
+      <div class="nav-item" data-page="parties" onclick="Pages.navigate('parties')">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Parties
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">GST Filing</div>
+      <div class="nav-item" data-page="returns" onclick="Pages.navigate('returns')">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span> GST Returns
+      </div>
+      <div class="nav-item" data-page="reconcile" onclick="Pages.navigate('reconcile')">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span> Reconciliation
+      </div>
+      <div class="nav-item" data-page="compliance" onclick="Pages.navigate('compliance')">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span> Compliance
+        <span class="nav-badge hidden" id="compliance-badge">0</span>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Tools</div>
+      <div class="nav-item" data-page="analytics" onclick="Pages.navigate('analytics')">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span> Analytics
+      </div>
+      <div class="nav-item" data-page="tds" onclick="Pages.navigate('tds')">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span> TDS / TCS
+      </div>
+      <div class="nav-item" data-page="hsn" onclick="Pages.navigate('hsn')">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span> HSN Lookup
+      </div>
+    </div>
+
+    <div class="nav-section admin-only">
+      <div class="nav-label">Admin Management</div>
+      <div class="nav-item" data-page="businesses" onclick="Pages.navigate('businesses')">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span> Businesses
+      </div>
+      <div class="nav-item" data-page="users" onclick="Pages.navigate('users')">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span> Users
+      </div>
+      <div class="nav-item" data-page="business-requests" onclick="Pages.navigate('business-requests')">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></span> Business Requests
+      </div>
+      <div class="nav-item" data-page="audit" onclick="Pages.navigate('audit')">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span> Audit Trail
+      </div>
+
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-info" id="profile-trigger" onclick="Pages.navigate('profile')" title="View profile" style="cursor:pointer">
+        <div class="user-avatar" id="user-avatar">A</div>
+        <div style="flex:1;overflow:hidden">
+          <div class="user-name" id="user-name">Loading...</div>
+          <div class="user-role" id="user-role">—</div>
+        </div>
+        <span class="profile-trigger-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Profile Panel ──────────────────────────────────────────────────── -->
+  <div class="profile-panel-overlay" id="profile-panel-overlay" onclick="ProfilePanel.close()"></div>
+  <div class="profile-panel" id="profile-panel" role="dialog" aria-label="Account panel">
+
+    <!-- Panel Header -->
+    <div class="profile-panel-header">
+      <div class="profile-panel-title">Account</div>
+      <button class="btn btn-sm btn-secondary btn-icon" onclick="ProfilePanel.close()" aria-label="Close">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- Scrollable body -->
+    <div class="profile-panel-body" id="profile-panel-body">
+
+      <!-- Identity block -->
+      <div class="pp-identity">
+        <div class="pp-avatar" id="pp-avatar">A</div>
+        <div class="pp-identity-info">
+          <div class="pp-name" id="pp-name">—</div>
+          <div class="pp-email" id="pp-email">—</div>
+          <span class="pp-role-badge" id="pp-role-badge">—</span>
+        </div>
+      </div>
+
+      <div class="pp-divider"></div>
+
+      <!-- Tab bar -->
+      <div class="pp-tabs">
+        <button class="pp-tab active" data-tab="profile" onclick="ProfilePanel.switchTab('profile')">Profile</button>
+        <button class="pp-tab" data-tab="password" onclick="ProfilePanel.switchTab('password')">Password</button>
+        <button class="pp-tab" data-tab="gst" onclick="ProfilePanel.switchTab('gst')">GST</button>
+        <button class="pp-tab" data-tab="settings" onclick="ProfilePanel.switchTab('settings')">Settings</button>
+      </div>
+
+      <!-- Tab: Profile -->
+      <div class="pp-tab-content" id="pp-tab-profile">
+        <div id="pp-profile-msg"></div>
+        <div class="form-grid" style="grid-template-columns:1fr">
+          <div class="form-group">
+            <label>Full Name <span class="req">*</span></label>
+            <input id="pp-field-name" type="text" placeholder="Your name">
+          </div>
+          <div class="form-group">
+            <label>Email Address <span class="req">*</span></label>
+            <input id="pp-field-email" type="email" placeholder="user@company.gstin">
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input id="pp-field-phone" type="tel" placeholder="+91 9999999999">
+          </div>
+        </div>
+        <button class="btn btn-primary w-full mt-3" id="pp-save-profile-btn" onclick="ProfilePanel.saveProfile()">Save Changes</button>
+      </div>
+
+      <!-- Tab: Password -->
+      <div class="pp-tab-content hidden" id="pp-tab-password">
+        <div id="pp-password-msg"></div>
+        <div class="form-grid" style="grid-template-columns:1fr">
+          <div class="form-group">
+            <label>Current Password <span class="req">*</span></label>
+            <input id="pp-cur-pw" type="password" placeholder="Current password">
+          </div>
+          <div class="form-group">
+            <label>New Password <span class="req">*</span></label>
+            <input id="pp-new-pw" type="password" placeholder="Min 6 characters">
+          </div>
+          <div class="form-group">
+            <label>Confirm New Password <span class="req">*</span></label>
+            <input id="pp-conf-pw" type="password" placeholder="Repeat new password">
+          </div>
+        </div>
+        <button class="btn btn-primary w-full mt-3" id="pp-save-pw-btn" onclick="ProfilePanel.changePassword()">Update Password</button>
+      </div>
+
+      <!-- Tab: GST -->
+      <div class="pp-tab-content hidden" id="pp-tab-gst">
+        <div id="pp-gst-content">
+          <div class="empty-state" style="padding:24px">
+            <div class="spinner" style="margin:0 auto;width:24px;height:24px"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Settings -->
+      <div class="pp-tab-content hidden" id="pp-tab-settings">
+        <div id="pp-settings-content"></div>
+      </div>
+
+      <div class="pp-divider"></div>
+
+      <!-- Quick navigation shortcuts -->
+      <div class="pp-section-label">Quick Navigation</div>
+      <div class="pp-shortcuts">
+        <button class="pp-shortcut" onclick="ProfilePanel.go('returns')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          GST Returns
+        </button>
+        <button class="pp-shortcut" onclick="ProfilePanel.go('invoices')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Sales Invoices
+        </button>
+        <button class="pp-shortcut" onclick="ProfilePanel.go('purchases')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
+          Purchases
+        </button>
+        <button class="pp-shortcut" onclick="ProfilePanel.go('compliance')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Compliance
+        </button>
+      </div>
+
+      <div class="pp-divider"></div>
+
+      <!-- Logout -->
+      <button class="pp-logout-btn" onclick="App.logout()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-wrap">
+    <header class="topbar">
+      <button class="sidebar-toggle" id="sidebar-toggle" onclick="App.toggleSidebar()" title="Menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="topbar-title" id="page-title">Dashboard</div>
+      <div class="topbar-actions">
+        <select class="currency-select" id="currency-select" onchange="App.setCurrency(this.value)" title="Currency">
+          <option value="INR">₹ INR</option>
+          <option value="USD">$ USD</option>
+          <option value="EUR">€ EUR</option>
+        </select>
+        <div class="notification-wrap">
+          <button class="notification-bell" id="notif-bell" onclick="App.toggleNotifications()" title="Notifications">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="notif-count hidden" id="notif-count">0</span>
+          </button>
+          <div class="notification-dropdown" id="notif-dropdown">
+            <div class="notif-header">Notifications</div>
+            <div id="notif-list"><div class="notif-empty">No notifications</div></div>
+          </div>
+        </div>
+        <button class="theme-toggle" id="theme-toggle" onclick="App.toggleTheme()" title="Toggle theme">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <span id="topbar-biz" style="font-size:0.78rem;color:var(--text3);font-family:var(--mono)"></span>
+        <span id="topbar-role" class="role-badge hidden"></span>
+      </div>
+    </header>
+    <main class="page-content" id="page-content">
+      <div class="empty-state">
+        <div class="spinner" style="margin:0 auto 16px;width:36px;height:36px"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Business Request Modal -->
+<div class="modal-overlay" id="business-request-modal">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title">Request Business Access</div>
+      <button class="btn btn-sm btn-secondary btn-icon" onclick="closeModal('business-request-modal')" aria-label="Close">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="alert alert-error hidden" id="business-request-error"></div>
+      <div class="form-group">
+        <label>Business Name *</label>
+        <input type="text" id="br-business-name" class="form-control" placeholder="Enter business name" required>
+      </div>
+      <div class="form-group">
+        <label>GSTIN (Optional)</label>
+        <input type="text" id="br-gstin" class="form-control" placeholder="e.g., 29ABCDE1234F1Z5">
+      </div>
+      <div class="form-group">
+        <label>Message (Optional)</label>
+        <textarea id="br-message" class="form-control" rows="3" placeholder="Add any additional information..."></textarea>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text3);margin-top:12px">
+        Your request will be sent to the administrator for review.
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('business-request-modal')">Cancel</button>
+      <button class="btn btn-primary" id="submit-business-request-btn" onclick="BusinessRequestModule.submitRequest()">Submit Request</button>
+    </div>
+  </div>
+</div>
+
+<!-- Shared confirm modal -->
+<div class="modal-overlay" id="confirm-modal">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title" id="confirm-title">Confirm</div>
+      <button class="btn btn-sm btn-secondary btn-icon" onclick="closeModal('confirm-modal')" aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <p id="confirm-msg" style="color:var(--text2)">Are you sure?</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('confirm-modal')">Cancel</button>
+      <button class="btn btn-danger" id="confirm-btn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div id="toast-container"></div>
+
+<!-- Scripts -->
+<script src="/js/app.js"></script>
+<script src="/js/pages.js"></script>
+<script src="/js/business-requests.js"></script>
+<script src="/js/invoices.js"></script>
+<script src="/js/more-pages.js"></script>
+<script src="/js/extra-pages.js"></script>
+<script src="/js/admin-pages.js"></script>
+<script src="/js/profile.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/chat-new.js"></script>
+
+<script>
+  // Password visibility toggle
+  function togglePwd(btn) {
+    const input = btn.closest('.pwd-wrap').querySelector('input');
+    const show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    btn.classList.toggle('visible', show);
+  }
+
+  // Login handler
+  async function doLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const rememberMe = document.getElementById('remember-me').checked;
+    const btn = document.getElementById('login-btn');
+    const err = document.getElementById('auth-error');
+    err.classList.add('hidden');
+    btn.disabled = true; btn.innerHTML = '<div class="spinner" style="width:16px;height:16px"></div> Logging in...';
+    try {
+      const res = await API.post('/auth/login', { email, password });
+      localStorage.setItem('gst_token', res.token);
+      if (rememberMe) { localStorage.setItem('gst_remember_email', email); } else { localStorage.removeItem('gst_remember_email'); }
+      if (res.businesses?.[0]) localStorage.setItem('gst_biz_id', String(res.businesses[0].id || res.businesses[0]._id));
+      App.user = res.user;
+      App.businesses = res.businesses || [];
+      App.currentBiz = App.businesses[0] || null;
+      App.showApp();
+      Pages.navigate('dashboard');
+    } catch(e) {
+      if (e.message?.includes('verify your email')) {
+        err.innerHTML = `${e.message} <a href="#" style="color:var(--accent)" onclick="resendVerification('${email}')">Resend email</a>`;
+      } else {
+        err.textContent = e.message || 'Login failed';
+      }
+      err.classList.remove('hidden');
+      btn.disabled = false; btn.textContent = 'Login';
+    }
+  }
+
+  function toggleAuth(view) {
+    ['login','signup','forgot','reset'].forEach(v => {
+      document.getElementById(v+'-card').classList.toggle('hidden', v !== view);
+    });
+  }
+
+  async function doRegister() {
+    const name = document.getElementById('signup-name').value.trim();
+    const email = document.getElementById('signup-email').value.trim();
+    const password = document.getElementById('signup-password').value;
+    const btn = document.getElementById('signup-btn');
+    const err = document.getElementById('signup-error');
+    err.classList.add('hidden');
+    btn.disabled = true; btn.innerHTML = '<div class="spinner" style="width:16px;height:16px"></div> Creating...';
+    try {
+      if (!name || !email || !password) throw new Error('All fields are required');
+      const res = await API.post('/auth/register', { name, email, password });
+      toggleAuth('login');
+      toast('Account created. Please check your email to verify before logging in.', 'success');
+    } catch(e) {
+      err.textContent = e.message || 'Registration failed';
+      err.classList.remove('hidden');
+      btn.disabled = false; btn.textContent = 'Create Account';
+    }
+  }
+
+  async function doForgotPassword() {
+    const email = document.getElementById('forgot-email').value.trim();
+    const btn = document.getElementById('forgot-btn');
+    const err = document.getElementById('forgot-error');
+    err.classList.add('hidden');
+    btn.disabled = true; btn.innerHTML = '<div class="spinner" style="width:16px;height:16px"></div> Sending...';
+    try {
+      if (!email) throw new Error('Email is required');
+      const res = await API.post('/auth/forgot-password', { email });
+      
+      // If token is returned, show it to the user
+      if (res.token) {
+        // Pre-fill the token in the reset form
+        document.getElementById('reset-token').value = res.token;
+        
+        // Show success message with token
+        toast(`Reset token: ${res.token}`, 'success', 8000);
+        
+        // Show the token in an alert box on the forgot password screen
+        err.innerHTML = `<div style="background: var(--green-bg); color: var(--green); padding: 12px; border-radius: 8px; border: 1px solid rgba(34,197,94,0.3); margin-top: 12px;">
+          <strong>Reset Token Generated!</strong><br>
+          Your reset token is: <strong style="font-size: 1.2em; letter-spacing: 2px; font-family: var(--mono);">${res.token}</strong><br>
+          <small>Copy this token and use it on the next screen.</small>
+        </div>`;
+        err.classList.remove('hidden');
+        
+        // Switch to reset password screen after 2 seconds
+        setTimeout(() => {
+          toggleAuth('reset');
+        }, 2000);
+      } else {
+        toast('If that email is registered, a reset link has been sent.', 'success');
+        toggleAuth('reset');
+      }
+    } catch(e) {
+      err.textContent = e.message || 'Action failed';
+      err.classList.remove('hidden');
+    } finally { btn.disabled = false; btn.textContent = 'Send Reset Token'; }
+  }
+
+  async function doResetPassword() {
+    const token = document.getElementById('reset-token').value.trim();
+    const password = document.getElementById('reset-password').value;
+    const btn = document.getElementById('reset-btn');
+    const err = document.getElementById('reset-error');
+    err.classList.add('hidden');
+    btn.disabled = true; btn.innerHTML = '<div class="spinner" style="width:16px;height:16px"></div> Updating...';
+    try {
+      if (!token || password.length < 6) throw new Error('Valid token & 6+ char password required');
+      await API.post('/auth/reset-password', { token, password });
+      toast('Password reset! Please log in.', 'success');
+      toggleAuth('login');
+    } catch(e) {
+      err.textContent = e.message || 'Action failed';
+      err.classList.remove('hidden');
+    } finally { btn.disabled = false; btn.textContent = 'Confirm New Password'; }
+  }
+
+  // Init app on load
+  document.addEventListener('DOMContentLoaded', () => {
+    // Handle email verification link
+    const hash = location.hash;
+    if (hash.startsWith('#verify?token=')) {
+      const token = hash.split('token=')[1];
+      API.post('/auth/verify-email', { token })
+        .then(res => { toast(res.message, 'success'); location.hash = ''; })
+        .catch(e => toast(e.message, 'error'));
+    }
+    // Handle OAuth redirect
+    if (hash.startsWith('#oauth?token=')) {
+      const token = hash.split('token=')[1];
+      localStorage.setItem('gst_token', token);
+      location.hash = '';
+    }
+    // Restore remembered email
+    const remembered = localStorage.getItem('gst_remember_email');
+    if (remembered) {
+      document.getElementById('login-email').value = remembered;
+      document.getElementById('remember-me').checked = true;
+    }
+    // Open signup if redirected from landing page
+    if (location.hash === '#signup' || sessionStorage.getItem('gst_open_signup')) {
+      sessionStorage.removeItem('gst_open_signup');
+      toggleAuth('signup');
+    }
+    App.init();
+  });
+
+  async function resendVerification(email) {
+    try {
+      await API.post('/auth/resend-verification', { email });
+      toast('Verification email sent! Check your inbox.', 'success');
+    } catch(e) { toast(e.message, 'error'); }
+  }
+
+  // Handle hash navigation
+  window.addEventListener('hashchange', () => {
+    const page = location.hash.replace('#','');
+    if (page && App.user) Pages.navigate(page);
+  });
+</script>
+</body>
+</html>

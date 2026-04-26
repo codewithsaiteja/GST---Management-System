@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Dashboard Preview Demo</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    :root {
+      --bg: #0f1117; --bg2: #1a1d27; --bg3: #22263a;
+      --surface: #1e2236; --surface2: #252a40;
+      --border: #2e3554; --border2: #3a4166;
+      --text: #e8eaf6; --text2: #9ba3c4; --text3: #5c6494;
+      --accent: #4f7ef8; --accent2: #6b95ff;
+      --green: #22c55e; --red: #ef4444; --amber: #f59e0b;
+      --purple: #a78bfa; --teal: #2dd4bf;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      font-size: 1.6rem; font-weight: 700;
+      margin-bottom: 8px; text-align: center;
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    p.sub {
+      color: var(--text3); font-size: 0.85rem;
+      margin-bottom: 48px; text-align: center;
+    }
+
+    /* ── 3D SCENE ── */
+    .scene {
+      perspective: 1200px;
+      width: 100%;
+      max-width: 860px;
+    }
+
+    .mockup-3d {
+      transform-style: preserve-3d;
+      transform: rotateX(6deg) rotateY(-8deg);
+      transition: transform 0.12s ease-out;
+      border-radius: 14px;
+      box-shadow:
+        0 60px 120px rgba(0,0,0,0.7),
+        0 0 0 1px var(--border),
+        0 0 80px rgba(79,126,248,0.12);
+      position: relative;
+    }
+
+    /* Glow reflection under the card */
+    .mockup-3d::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: 10%; right: 10%;
+      height: 40px;
+      background: radial-gradient(ellipse, rgba(79,126,248,0.25) 0%, transparent 70%);
+      filter: blur(12px);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* ── BROWSER CHROME ── */
+    .browser {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .browser-bar {
+      background: var(--bg2);
+      padding: 10px 16px;
+      display: flex; align-items: center; gap: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .dots { display: flex; gap: 6px; }
+    .dots span { width: 10px; height: 10px; border-radius: 50%; }
+    .dots span:nth-child(1) { background: #ef4444; }
+    .dots span:nth-child(2) { background: #f59e0b; }
+    .dots span:nth-child(3) { background: #22c55e; }
+    .url-bar {
+      flex: 1; background: var(--bg3); border-radius: 4px;
+      padding: 4px 12px; font-size: 0.72rem;
+      color: var(--text3); font-family: 'JetBrains Mono', monospace;
+      text-align: center;
+    }
+
+    /* ── DASHBOARD BODY ── */
+    .dash-body {
+      display: flex; height: 420px;
+    }
+
+    /* Sidebar */
+    .dash-sidebar {
+      width: 190px; background: var(--bg2);
+      border-right: 1px solid var(--border);
+      padding: 16px 0; flex-shrink: 0;
+    }
+    .dash-logo {
+      display: flex; align-items: center; gap: 8px;
+      padding: 0 14px 20px;
+    }
+    .dash-logo-icon {
+      width: 28px; height: 28px; border-radius: 7px;
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700; color: #fff;
+    }
+    .dash-logo-text { font-size: 0.82rem; font-weight: 600; }
+    .dash-section { font-size: 0.58rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; padding: 8px 14px 4px; }
+    .dash-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 14px; font-size: 0.74rem; color: var(--text2);
+      cursor: default; transition: background 0.2s;
+    }
+    .dash-item.active {
+      background: rgba(79,126,248,0.12); color: var(--accent2);
+      border-right: 2px solid var(--accent);
+    }
+    .dash-item svg { opacity: 0.7; }
+
+    /* Main content */
+    .dash-main { flex: 1; padding: 18px; overflow: hidden; background: var(--surface); }
+    .dash-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 16px;
+    }
+    .dash-title { font-size: 1rem; font-weight: 700; }
+    .dash-period {
+      font-size: 0.65rem; color: var(--text3);
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg3); padding: 3px 8px; border-radius: 4px;
+    }
+
+    /* KPI Cards */
+    .kpi-grid {
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 10px;
+      margin-bottom: 16px;
+    }
+    .kpi {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px;
+      transition: border-color 0.3s;
+    }
+    .kpi:hover { border-color: var(--accent); }
+    .kpi-label { font-size: 0.6rem; color: var(--text3); margin-bottom: 6px; }
+    .kpi-val { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .kpi-change { font-size: 0.6rem; }
+    .up { color: var(--green); }
+    .down { color: var(--red); }
+
+    /* Charts row */
+    .charts-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; }
+    .chart-box {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px;
+    }
+    .chart-title { font-size: 0.65rem; color: var(--text2); margin-bottom: 10px; font-weight: 500; }
+
+    /* Bar chart */
+    .bars { display: flex; align-items: flex-end; gap: 5px; height: 80px; }
+    .bar {
+      flex: 1; border-radius: 3px 3px 0 0;
+      background: linear-gradient(180deg, var(--accent), rgba(79,126,248,0.4));
+      animation: growBar 1s ease-out forwards;
+      transform-origin: bottom;
+    }
+    @keyframes growBar { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+    /* Donut */
+    .donut-wrap { display: flex; align-items: center; justify-content: center; height: 80px; }
+    .donut {
+      width: 70px; height: 70px; border-radius: 50%;
+      background: conic-gradient(
+        var(--accent) 0% 42%,
+        var(--purple) 42% 68%,
+        var(--teal) 68% 84%,
+        var(--border2) 84% 100%
+      );
+      position: relative;
+    }
+    .donut::after {
+      content: ''; position: absolute;
+      inset: 18px; border-radius: 50%;
+      background: var(--surface2);
+    }
+
+    /* Activity feed */
+    .activity { display: flex; flex-direction: column; gap: 6px; }
+    .act-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.62rem; color: var(--text2);
+    }
+    .act-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── SIDE DEPTH FACE ── */
+    .depth-right {
+      position: absolute;
+      top: 8px; right: -18px;
+      width: 18px; height: calc(100% - 8px);
+      background: linear-gradient(to right, #1a1d27, #0d0f18);
+      border-radius: 0 6px 6px 0;
+      transform: rotateY(90deg);
+      transform-origin: left center;
+    }
+    .depth-bottom {
+      position: absolute;
+      bottom: -14px; left: 8px;
+      width: calc(100% - 8px); height: 14px;
+      background: linear-gradient(to bottom, #1a1d27, #0d0f18);
+      border-radius: 0 0 6px 6px;
+      transform: rotateX(-90deg);
+      transform-origin: top center;
+    }
+
+    /* ── BUTTONS ── */
+    .btn-row {
+      display: flex; gap: 12px; margin-top: 48px; justify-content: center;
+    }
+    .btn {
+      padding: 10px 24px; border-radius: 8px; font-size: 0.88rem;
+      font-weight: 500; cursor: pointer; text-decoration: none;
+      border: none; font-family: 'DM Sans', sans-serif;
+      transition: all 0.18s;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+    .btn-ghost {
+      background: transparent; color: var(--text2);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { color: var(--text); border-color: var(--border2); background: var(--surface); }
+
+    .hint {
+      margin-top: 20px; font-size: 0.75rem; color: var(--text3);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>3D Dashboard Preview</h1>
+  <p class="sub">Move your mouse over the card to see the 3D tilt effect</p>
+
+  <div class="scene" id="scene">
+    <div class="mockup-3d" id="card">
+
+      <!-- Depth faces -->
+      <div class="depth-right"></div>
+      <div class="depth-bottom"></div>
+
+      <div class="browser">
+        <!-- Browser bar -->
+        <div class="browser-bar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="url-bar">dashboard.gst-system.internal</div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="dash-body">
+          <!-- Sidebar -->
+          <div class="dash-sidebar">
+            <div class="dash-logo">
+              <div class="dash-logo-icon">G</div>
+              <div class="dash-logo-text">GST System</div>
+            </div>
+            <div class="dash-section">Main</div>
+            <div class="dash-item active">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+              Dashboard
+            </div>
+            <div class="dash-item">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>
+              Sales Invoices
+            </div>
+            <div class="dash-item">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+              Purchases
+            </div>
+            <div class="dash-item">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              Parties
+            </div>
+            <div class="dash-section">GST Filing</div>
+            <div class="dash-item">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              GST Returns
+            </div>
+            <div class="dash-item">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+              Reconciliation
+            </div>
+            <div class="dash-item">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Compliance
+            </div>
+            <div class="dash-section">Tools</div>
+            <div class="dash-item">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              Analytics
+            </div>
+          </div>
+
+          <!-- Main content -->
+          <div class="dash-main">
+            <div class="dash-header">
+              <div class="dash-title">Dashboard</div>
+              <div class="dash-period">FY 2024-25 · Q3</div>
+            </div>
+
+            <!-- KPIs -->
+            <div class="kpi-grid">
+              <div class="kpi">
+                <div class="kpi-label">Total Tax Liability</div>
+                <div class="kpi-val">₹4.2L</div>
+                <div class="kpi-change up">↑ 12.4%</div>
+              </div>
+              <div class="kpi">
+                <div class="kpi-label">ITC Available</div>
+                <div class="kpi-val">₹1.8L</div>
+                <div class="kpi-change up">↑ 8.1%</div>
+              </div>
+              <div class="kpi">
+                <div class="kpi-label">Net Payable</div>
+                <div class="kpi-val">₹2.4L</div>
+                <div class="kpi-change down">↓ 3.2%</div>
+              </div>
+              <div class="kpi">
+                <div class="kpi-label">Returns Filed</div>
+                <div class="kpi-val">8/12</div>
+                <div class="kpi-change up">On Track</div>
+              </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-row">
+              <div class="chart-box">
+                <div class="chart-title">Monthly Tax Trend</div>
+                <div class="bars" id="bars"></div>
+              </div>
+              <div class="chart-box">
+                <div class="chart-title">Tax Breakup</div>
+                <div class="donut-wrap"><div class="donut"></div></div>
+              </div>
+              <div class="chart-box">
+                <div class="chart-title">Recent Activity</div>
+                <div class="activity">
+                  <div class="act-item"><div class="act-dot" style="background:var(--green)"></div>GSTR-1 filed</div>
+                  <div class="act-item"><div class="act-dot" style="background:var(--accent)"></div>Invoice #1042 created</div>
+                  <div class="act-item"><div class="act-dot" style="background:var(--amber)"></div>ITC mismatch found</div>
+                  <div class="act-item"><div class="act-dot" style="background:var(--purple)"></div>New party added</div>
+                  <div class="act-item"><div class="act-dot" style="background:var(--teal)"></div>Export generated</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="hint">🖱️ Move your mouse over the card</p>
+
+  <div class="btn-row">
+    <a href="/landing.html" class="btn btn-ghost">← Back to Landing</a>
+    <button class="btn btn-primary" onclick="applyToLanding()">✓ Apply to Landing Page</button>
+  </div>
+
+<script>
+  // ── Generate bars ──
+  const barsEl = document.getElementById('bars');
+  const heights = [35, 55, 42, 70, 48, 65, 80, 58, 72, 45, 68, 90];
+  heights.forEach((h, i) => {
+    const b = document.createElement('div');
+    b.className = 'bar';
+    b.style.height = h + '%';
+    b.style.animationDelay = (i * 0.05) + 's';
+    barsEl.appendChild(b);
+  });
+
+  // ── 3D tilt on mouse move ──
+  const scene = document.getElementById('scene');
+  const card  = document.getElementById('card');
+
+  scene.addEventListener('mousemove', e => {
+    const rect = scene.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top  + rect.height / 2;
+    const dx = (e.clientX - cx) / (rect.width  / 2);
+    const dy = (e.clientY - cy) / (rect.height / 2);
+
+    const rotY =  dx * 14;   // max ±14deg horizontal
+    const rotX = -dy *  8;   // max ±8deg  vertical
+
+    card.style.transform = `rotateX(${rotX + 4}deg) rotateY(${rotY - 6}deg)`;
+  });
+
+  scene.addEventListener('mouseleave', () => {
+    card.style.transition = 'transform 0.6s cubic-bezier(0.16,1,0.3,1)';
+    card.style.transform  = 'rotateX(6deg) rotateY(-8deg)';
+    setTimeout(() => card.style.transition = 'transform 0.12s ease-out', 600);
+  });
+
+  // ── Apply button ──
+  function applyToLanding() {
+    alert('To apply: tell Kiro "apply the 3D effect to the landing page mockup" and it will be done automatically.');
+  }
+</script>
+</body>
+</html>

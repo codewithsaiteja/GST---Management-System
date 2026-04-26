@@ -1,0 +1,30 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "C:\\Users\\saite\\OneDrive\\Desktop\\Sais Code\\logs\\.f860d47c2406b18fc431a18608f48d8336d4f589-audit.json",
+    "files": [
+        {
+            "date": 1776945223556,
+            "name": "C:\\Users\\saite\\OneDrive\\Desktop\\Sais Code\\logs\\error-2026-04-23.log",
+            "hash": "bddfb71d5963650fe494bfe43a4cf6000bd87b6f10140c3a87f9ec6b58e6152d"
+        },
+        {
+            "date": 1777018307419,
+            "name": "C:\\Users\\saite\\OneDrive\\Desktop\\Sais Code\\logs\\error-2026-04-24.log",
+            "hash": "8e8f776f58087310d4f64c8c70751a1cb1c2406e22140275806a932ab121227f"
+        },
+        {
+            "date": 1777102179483,
+            "name": "C:\\Users\\saite\\OneDrive\\Desktop\\Sais Code\\logs\\error-2026-04-25.log",
+            "hash": "89f7c89fb4a737cd9f43e71fc52a72a380d826bf7bf325c91bcf758451ef7708"
+        },
+        {
+            "date": 1777180823203,
+            "name": "C:\\Users\\saite\\OneDrive\\Desktop\\Sais Code\\logs\\error-2026-04-26.log",
+            "hash": "3f82ae4d2c05b37db5768bd2684025bf16f0328c03dd9f81c056f5bc48301cf7"
+        }
+    ],
+    "hashType": "sha256"
+}
