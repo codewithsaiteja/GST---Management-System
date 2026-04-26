@@ -399,9 +399,7 @@ initDb().then(() => {
     cron.schedule('0 6 * * *', updateOverdueCompliance);
   } catch(e) {}
   server.listen(PORT, () => {
-    console.log(`\n🚀 GST System running → http://localhost:${PORT}`);
-    console.log(`📧 Login: admin@gst.local`);
-    console.log(`🔑 Password: Admin@123\n`);
+    console.log(`\n🚀 GST System running → http://localhost:${PORT}\n`);
   });
 }).catch(err => {
   logger.error('❌ Failed to initialize database: ' + err.message);
