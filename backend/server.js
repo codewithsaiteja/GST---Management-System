@@ -33,7 +33,13 @@ const io = new Server(server, {
 
 /* ── Middleware ─────────────────────────────────────────────── */
 app.use(helmet({ contentSecurityPolicy: false }));
-app.use(cors());
+app.use(cors({
+  origin: process.env.APP_URL || '*',
+  methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization'],
+  credentials: true,
+}));
+app.options('*', cors()); // handle preflight
 app.use(compression());
 // Route morgan through winston
 app.use(morgan('combined', { stream: { write: msg => logger.http(msg.trim()) } }));

@@ -99,26 +99,32 @@ router.post('/register', [
     const existing = await User.findOne({ email: email.toLowerCase() });
     if (existing) return res.status(400).json({ success: false, message: 'Email already in use' });
     const hash = bcrypt.hashSync(password, 10);
-    const verifyToken = crypto.randomBytes(32).toString('hex');
-    const isDev = process.env.NODE_ENV !== 'production';
+    const emailConfigured = !!(process.env.EMAIL_USER && process.env.EMAIL_PASS &&
+      !process.env.EMAIL_USER.includes('your_email'));
+
+    // Only require email verification if email is properly configured
+    const requireVerification = emailConfigured;
+    const verifyToken = requireVerification ? crypto.randomBytes(32).toString('hex') : undefined;
+
     const user = await User.create({
       name, email: email.toLowerCase(), password: hash, role: 'accountant',
-      emailVerified: isDev ? true : false,
-      emailVerifyToken: isDev ? undefined : verifyToken,
-      emailVerifyExpires: isDev ? undefined : Date.now() + 24 * 60 * 60 * 1000,
+      emailVerified: !requireVerification,
+      emailVerifyToken: verifyToken,
+      emailVerifyExpires: verifyToken ? Date.now() + 24 * 60 * 60 * 1000 : undefined,
     });
-    if (isDev) {
-      return res.json({ success: true, message: 'Account created successfully. You can now log in.' });
+
+    if (requireVerification) {
+      try {
+        const { sendVerificationEmail } = require('../utils/mailer');
+        await sendVerificationEmail(user.email, user.name, verifyToken);
+        return res.json({ success: true, message: 'Account created! Please check your email to verify before logging in.' });
+      } catch(mailErr) {
+        // Email failed — auto-verify so user isn't locked out
+        console.warn('Email send failed, auto-verifying account:', mailErr.message);
+        await user.updateOne({ emailVerified: true, emailVerifyToken: undefined });
+      }
     }
-    // Send verification email (production only)
-    try {
-      const { sendVerificationEmail } = require('../utils/mailer');
-      await sendVerificationEmail(user.email, user.name, verifyToken);
-    } catch(mailErr) {
-      console.warn('Email send failed:', mailErr.message);
-      console.log(`[SIMULATED] Verify token for ${user.email}: ${verifyToken}`);
-    }
-    res.json({ success: true, message: 'Account created successfully! You can now login.' });
+    res.json({ success: true, message: 'Account created successfully. You can now log in.' });
   } catch(e) { res.status(500).json({ success: false, message: e.message }); }
 });
 
