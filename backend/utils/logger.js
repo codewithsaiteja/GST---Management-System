@@ -2,7 +2,11 @@ const winston = require('winston');
 const path = require('path');
 require('winston-daily-rotate-file');
 
-const logDir = path.join(__dirname, '../../logs');
+// On Render (and similar platforms) the app directory may be read-only.
+// Use /tmp/logs in production so log rotation always has a writable path.
+const logDir = process.env.NODE_ENV === 'production'
+  ? '/tmp/logs'
+  : path.join(__dirname, '../../logs');
 
 const fmt = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),

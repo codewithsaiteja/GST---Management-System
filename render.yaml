@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: gst-management-system
+    env: node
+    region: singapore   # closest to India
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGO_URI
+        sync: false        # set manually in Render dashboard
+      - key: JWT_SECRET
+        generateValue: true
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 30m
+      - key: BCRYPT_ROUNDS
+        value: 10
+      - key: GROQ_API_KEY
+        sync: false        # set manually in Render dashboard
+      - key: EMAIL_SERVICE
+        value: gmail
+      - key: EMAIL_USER
+        sync: false        # set manually in Render dashboard
+      - key: EMAIL_PASS
+        sync: false        # set manually in Render dashboard
+      - key: APP_URL
+        sync: false        # set to your Render URL after deploy
