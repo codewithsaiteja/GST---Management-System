@@ -56,7 +56,7 @@ app.use((req, res, next) => {
 app.use(morgan('combined', { stream: { write: msg => logger.http(msg.trim()) } }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
-app.use('/api/', rateLimit({ windowMs: 15*60*1000, max: 1000, standardHeaders: true, legacyHeaders: false }));
+app.use('/api', rateLimit({ windowMs: 15*60*1000, max: 1000, standardHeaders: true, legacyHeaders: false }));
 
 // Serve static assets but disable auto-serving index.html for '/'
 app.use(express.static(path.join(__dirname, '../'), { index: false }));

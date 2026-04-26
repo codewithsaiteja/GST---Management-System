@@ -1,8 +1,5 @@
 // API configuration
-const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? '/api'
-  : 'https://gst-management-system.onrender.com/api';
-
+const API_BASE = '/api';
 console.log('🌐 API Base initialized:', API_BASE);
 
 // API client
