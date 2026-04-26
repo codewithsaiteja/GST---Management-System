@@ -204,6 +204,12 @@
     const token = localStorage.getItem('gst_token');
     if (!token) return;
 
+    // Guard: socket.io client may not be loaded yet
+    if (typeof io === 'undefined') {
+      console.warn('Socket.IO not loaded, chat will be unavailable');
+      return;
+    }
+
     socket = io(window.location.origin, {
       transports: ['websocket', 'polling'],
       reconnection: true

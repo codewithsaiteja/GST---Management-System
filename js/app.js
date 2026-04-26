@@ -240,10 +240,8 @@ const App = {
     // Init live chat widget (only once)
     if (window.ChatModule && !window.ChatModule._started) {
       window.ChatModule._started = true;
-      window.ChatModule.init(this.user);
+      try { window.ChatModule.init(this.user); } catch(e) { console.warn('Chat init failed:', e.message); }
     }
-    // Init chat
-    if (typeof ChatModule !== 'undefined') ChatModule.init(this.user);
     // Check for pending business requests if no business assigned
     if (!this.currentBiz && this.user.role !== 'admin' && typeof BusinessRequestModule !== 'undefined') {
       BusinessRequestModule.checkPendingStatus();
